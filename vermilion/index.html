@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>正印疏文 - 纯文本写论文,一键导出规范 Word｜GB/T 7714 参考文献自动生成 · 审阅修订导出</title>
+  <meta name="description" content="免费的 Windows 学术写作工具:在纯文本里安心写,一键导出真标题样式、自动目录、GB/T 7714 国标参考文献的规范 Word;两稿差异可直接导出为带审阅修订的 Word 交给导师。绿色单文件,免安装。¥39 激活码启用全功能,可先 14 天免费体验。">
+  <meta name="keywords" content="论文Word排版,GB/T 7714,参考文献自动生成,Word修订导出,txt写作软件,毕业论文格式,自动目录,学术写作工具">
+  <link rel="canonical" href="https://jinglishu.cn/vermilion/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="正印疏文 - 论文在纯文本里写,交出去的是规范 Word">
+  <meta property="og:description" content="真标题样式 · 自动目录 · GB/T 7714 国标参考文献 · 带审阅修订的改稿导出。免费下载,¥39 激活码启用全功能,14 天免费体验。">
+  <meta property="og:url" content="https://jinglishu.cn/vermilion/">
+  <!-- TODO: 准备一张 1200×630 分享图后加 og:image -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "正印疏文 Vermilion",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "Productivity",
+    "description": "纯文本学术写作工具:一键导出真标题样式、自动目录、GB/T 7714 国标参考文献的规范 Word,支持导出带审阅修订的 Word。",
+    "url": "https://jinglishu.cn/vermilion/",
+    "offers": [
+      { "@type": "Offer", "price": "0", "priceCurrency": "CNY", "name": "免费下载" },
+      { "@type": "Offer", "price": "39", "priceCurrency": "CNY", "name": "激活码买断(全功能)" }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --ink: #17201c;
+      --muted: #64726b;
+      --paper: #f8f4ea;
+      --paper-deep: #efe5d2;
+      --jade: #1f5f4a;
+      --jade-dark: #123a30;
+      --gold: #b88a3c;
+      --zhu: #a8322a;          /* 朱砂:修订标记 / 印泥 / Vermilion 本色 */
+      --zhu-dark: #7f241e;
+      --zhu-soft: rgba(168, 50, 42, 0.08);
+      --line: rgba(31, 95, 74, 0.18);
+      --white: rgba(255, 255, 255, 0.72);
+      --shadow: 0 24px 70px rgba(18, 58, 48, 0.12);
+      --sans: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+      --mono: "Sarasa Mono SC", "Cascadia Code", Consolas, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; animation: none !important; }
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184, 138, 60, 0.16), transparent 30rem),
+        radial-gradient(circle at 82% 6%, rgba(168, 50, 42, 0.10), transparent 26rem),
+        linear-gradient(180deg, var(--paper), #fbfaf5 46%, var(--paper-deep));
+      font-family: var(--serif);
+      line-height: 1.75;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--jade);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(248, 244, 234, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 68px; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--jade-dark); }
+    .seal {
+      width: 36px; height: 36px; display: grid; place-items: center;
+      border: 1px solid rgba(168, 50, 42, 0.55);
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--zhu); font-size: 19px; border-radius: 10px;
+    }
+    .brand small { font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 400; letter-spacing: 0.05em; }
+    .nav-links { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: 14px; font-family: var(--sans); }
+    .nav-links a:hover { color: var(--jade); }
+
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 46px; padding: 0 22px; border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--jade-dark); font-weight: 600; font-family: var(--sans);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .button.primary {
+      background: var(--zhu); color: #fffaf0; border-color: transparent;
+      box-shadow: 0 16px 40px rgba(168, 50, 42, 0.24);
+    }
+    .button.jade { background: var(--jade); color: #fffaf0; border-color: transparent; }
+    .button.small { min-height: 38px; padding: 0 16px; font-size: 14px; }
+    .button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    section { padding: 84px 0; border-top: 1px solid var(--line); }
+    section:first-of-type { border-top: none; }
+
+    .kicker { color: var(--gold); font-size: 13px; letter-spacing: 0.22em; font-family: var(--sans); text-transform: uppercase; }
+    h2 { margin: 10px 0 0; font-size: clamp(30px, 4.6vw, 48px); line-height: 1.2; color: var(--jade-dark); letter-spacing: 0.04em; }
+    .lead { margin: 14px 0 0; color: var(--muted); max-width: 720px; font-size: 17px; font-family: var(--sans); }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 72px 0 84px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--jade); font-size: 13px; letter-spacing: 0.2em;
+      font-family: var(--sans); margin-bottom: 20px;
+    }
+    .eyebrow::before { content: ""; width: 36px; height: 1px; background: var(--gold); opacity: 0.75; }
+    h1 {
+      margin: 0; font-size: clamp(34px, 5.6vw, 56px); line-height: 1.3;
+      color: var(--jade-dark); letter-spacing: 0.04em;
+    }
+    h1 em { font-style: normal; color: var(--zhu); }
+    .hero-sub { margin: 20px 0 0; color: var(--muted); font-size: 17px; font-family: var(--sans); max-width: 520px; }
+    .hero-actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .trust { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 13px; font-family: var(--sans); }
+    .trust span::before { content: "✓ "; color: var(--jade); }
+
+    /* Word 修订视图示意(CSS 实现,可日后换成真截图) */
+    .word-mock {
+      border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+      background: #fff; box-shadow: var(--shadow);
+    }
+    .word-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; background: #f3f2ee; border-bottom: 1px solid #e5e2da;
+      font-family: var(--sans); font-size: 12px; color: #6b6b66;
+    }
+    .word-bar b { color: #3d3d39; font-weight: 600; }
+    .word-page { padding: 26px 28px 22px; font-size: 15px; line-height: 2.1; }
+    .word-page p { margin: 0 0 10px; position: relative; padding-left: 14px; }
+    .word-page p::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; background: var(--zhu); }
+    .word-page del { color: var(--zhu-dark); text-decoration: line-through; }
+    .word-page ins { color: var(--zhu-dark); text-decoration: underline; text-underline-offset: 4px; font-style: normal; }
+    .word-note {
+      margin: 4px 28px 20px; padding: 10px 14px;
+      border-left: 3px solid var(--zhu); background: var(--zhu-soft);
+      font-family: var(--sans); font-size: 12.5px; color: var(--zhu-dark); border-radius: 0 10px 10px 0;
+    }
+    .mock-caption { margin-top: 12px; text-align: center; color: var(--muted); font-size: 13px; font-family: var(--sans); }
+    /* 说明:hero 右侧为 CSS 画的修订视图示意,当天即可上线;拍好素材 S4 后可整块替换为真录屏 */
+
+    /* ---------- 返修三连 ---------- */
+    .pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; }
+    .pain {
+      padding: 26px; border: 1px solid var(--line); border-radius: 24px;
+      background: var(--white); box-shadow: var(--shadow);
+    }
+    .pain .chip {
+      display: inline-block; padding: 3px 12px; border-radius: 999px;
+      background: var(--zhu-soft); color: var(--zhu-dark);
+      font-family: var(--sans); font-size: 12.5px; letter-spacing: 0.08em;
+    }
+    .pain blockquote { margin: 14px 0 10px; font-size: 18px; line-height: 1.7; color: var(--ink); }
+    .pain p { margin: 0; color: var(--muted); font-size: 14px; font-family: var(--sans); }
+    .pain-close { margin-top: 26px; font-size: 19px; color: var(--jade-dark); }
+
+    /* ---------- 分工流程 ---------- */
+    .flow { display: flex; align-items: stretch; justify-content: center; gap: 14px; margin-top: 36px; flex-wrap: wrap; }
+    .node {
+      flex: 1 1 220px; max-width: 300px; padding: 24px 20px; text-align: center;
+      border: 1px solid var(--line); border-radius: 22px; background: var(--white); box-shadow: var(--shadow);
+    }
+    .node .file { display: inline-block; padding: 6px 14px; border-radius: 10px; font-family: var(--mono); font-size: 14px; background: rgba(23, 32, 28, 0.05); border: 1px solid rgba(23, 32, 28, 0.12); }
+    .node .file.red { color: var(--zhu-dark); background: var(--zhu-soft); border-color: rgba(168, 50, 42, 0.25); }
+    .node strong { display: block; margin-top: 12px; color: var(--jade-dark); font-size: 18px; letter-spacing: 0.06em; }
+    .node span { display: block; margin-top: 6px; color: var(--muted); font-size: 13.5px; font-family: var(--sans); }
+    .arrow { align-self: center; color: var(--gold); font-size: 26px; }
+
+    /* ---------- 功能行 ---------- */
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 44px; }
+    .frow.rev .fmedia { order: -1; }
+    .frow h3 { margin: 0; font-size: 26px; color: var(--jade-dark); letter-spacing: 0.04em; }
+    .frow h3 .mark { color: var(--zhu); }
+    .frow .ftext p { margin: 12px 0 0; color: var(--muted); font-family: var(--sans); font-size: 15.5px; }
+    .fmedia {
+      border: 1px solid var(--line); border-radius: 20px; background: #fff;
+      box-shadow: var(--shadow); padding: 24px; position: relative;
+    }
+    .ftag {
+      position: absolute; top: -12px; right: 18px;
+      padding: 4px 12px; border-radius: 999px;
+      background: var(--zhu); color: #fffaf0;
+      font-family: var(--sans); font-size: 12px; letter-spacing: 0.06em;
+    }
+    .ftag.jade { background: var(--jade); }
+
+    .toc-title { text-align: center; font-size: 17px; letter-spacing: 0.5em; margin-bottom: 14px; color: var(--ink); }
+    .toc-line { display: flex; align-items: baseline; gap: 10px; font-size: 14.5px; margin: 7px 0; }
+    .toc-line .dots { flex: 1; border-bottom: 2px dotted rgba(23, 32, 28, 0.3); transform: translateY(-4px); }
+    .toc-line .pg { font-variant-numeric: tabular-nums; color: var(--muted); }
+    .toc-sub { padding-left: 1.5em; }
+    .style-note { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); font-family: var(--sans); font-size: 12.5px; color: var(--muted); }
+
+    .refs p { margin: 0 0 12px; font-size: 14px; line-height: 1.9; text-align: justify; }
+    .refs p:last-child { margin-bottom: 0; }
+
+    .pipeline { display: grid; gap: 10px; }
+    .pipeline .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .pipeline .file { padding: 6px 14px; border-radius: 10px; font-family: var(--mono); font-size: 13.5px; background: rgba(23, 32, 28, 0.05); border: 1px solid rgba(23, 32, 28, 0.12); }
+    .mini-word { border: 1px solid #e5e2da; border-radius: 12px; background: #fff; padding: 12px 16px; font-size: 13.5px; line-height: 2; flex: 1 1 200px; }
+    .mini-word del { color: var(--zhu-dark); text-decoration: line-through; }
+    .mini-word ins { color: var(--zhu-dark); text-decoration: underline; text-underline-offset: 3px; font-style: normal; }
+
+    .sentences { display: grid; gap: 10px; }
+    .sent {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px;
+      background: rgba(255, 255, 255, 0.85); font-size: 14.5px;
+    }
+    .sent .handle { color: var(--muted); font-family: var(--sans); letter-spacing: -1px; cursor: grab; }
+    .sent.lift {
+      transform: translateY(-4px) rotate(-1.1deg);
+      border-color: rgba(168, 50, 42, 0.45); box-shadow: 0 14px 30px rgba(168, 50, 42, 0.14);
+    }
+    .sent-label { margin-top: 4px; text-align: right; font-family: var(--sans); font-size: 12.5px; color: var(--zhu-dark); }
+
+    .mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
+    .mini-card { padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--white); box-shadow: var(--shadow); }
+    .mini-card strong { display: block; color: var(--jade-dark); font-size: 19px; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .mini-card p { margin: 0; color: var(--muted); font-size: 14.5px; font-family: var(--sans); }
+
+    .free-note { margin-top: 26px; font-size: 17px; color: var(--jade-dark); }
+
+    /* ---------- 对比表 ---------- */
+    .cmp-scroll { margin-top: 34px; overflow-x: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--white); box-shadow: var(--shadow); }
+    table.cmp { width: 100%; border-collapse: collapse; min-width: 720px; font-family: var(--sans); font-size: 14px; }
+    .cmp th, .cmp td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .cmp thead th { font-family: var(--serif); font-size: 16px; color: var(--jade-dark); letter-spacing: 0.04em; }
+    .cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: none; }
+    .cmp tbody th { font-weight: 600; color: var(--ink); white-space: nowrap; }
+    .cmp td { color: var(--muted); }
+    .cmp .me { background: var(--zhu-soft); color: var(--ink); border-left: 2px solid var(--zhu); }
+    .cmp thead .me { color: var(--zhu-dark); }
+
+    /* ---------- 定价 ---------- */
+    .plans { display: grid; grid-template-columns: 1fr 1.1fr; gap: 22px; margin-top: 36px; align-items: stretch; }
+    .plan { position: relative; padding: 34px 30px; border: 1px solid var(--line); border-radius: 26px; background: var(--white); box-shadow: var(--shadow); display: flex; flex-direction: column; }
+    .plan.pro { border: 1.5px solid rgba(168, 50, 42, 0.5); }
+    .stamp {
+      position: absolute; top: -16px; right: 22px; transform: rotate(-8deg);
+      padding: 8px 12px; border: 2px solid var(--zhu); border-radius: 8px;
+      color: var(--zhu); background: var(--paper);
+      font-size: 18px; letter-spacing: 0.3em; font-weight: 700;
+    }
+    .plan h3 { margin: 0; font-size: 22px; color: var(--jade-dark); letter-spacing: 0.06em; }
+    .price { margin: 14px 0 4px; font-size: 42px; color: var(--ink); }
+    .price small { font-size: 15px; color: var(--muted); font-family: var(--sans); }
+    .price .old { font-size: 16px; color: var(--muted); text-decoration: line-through; margin-left: 10px; }
+    .plan-sub { margin: 0 0 16px; color: var(--zhu-dark); font-family: var(--sans); font-size: 13.5px; }
+    .plan ul { margin: 0 0 22px; padding: 0 0 0 1.2em; color: var(--muted); font-family: var(--sans); font-size: 14.5px; display: grid; gap: 8px; }
+    .plan ul strong { color: var(--ink); font-weight: 600; }
+    .plan .button { margin-top: auto; }
+    .plan-fine { margin-top: 12px; font-family: var(--sans); font-size: 12.5px; color: var(--muted); }
+
+    /* ---------- FAQ ---------- */
+    .faq { margin-top: 30px; display: grid; gap: 12px; }
+    details {
+      border: 1px solid var(--line); border-radius: 18px;
+      background: var(--white); padding: 18px 22px; font-family: var(--sans);
+    }
+    summary { cursor: pointer; color: var(--jade-dark); font-weight: 700; font-size: 16px; font-family: var(--serif); letter-spacing: 0.02em; }
+    details p { margin: 12px 0 0; color: var(--muted); font-size: 14.5px; }
+
+    /* ---------- 出品人 ---------- */
+    .maker { text-align: center; max-width: 640px; margin: 0 auto; }
+    .maker .seal { margin: 0 auto 18px; width: 44px; height: 44px; font-size: 22px; border-color: rgba(184, 138, 60, 0.58); color: var(--gold); }
+    .maker h2 { font-size: clamp(26px, 4vw, 38px); }
+    .maker p { color: var(--muted); font-family: var(--sans); font-size: 15.5px; }
+    .maker-links { margin-top: 18px; display: flex; justify-content: center; gap: 22px; font-family: var(--sans); font-size: 14px; }
+    .maker-links a { color: var(--jade); border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+
+    /* ---------- 下载 ---------- */
+    .dl { text-align: center; }
+    .dl .hero-actions { justify-content: center; }
+    .dl-meta { margin-top: 22px; display: grid; gap: 6px; color: var(--muted); font-family: var(--sans); font-size: 13.5px; }
+    .dl-meta code { font-family: var(--mono); font-size: 12.5px; background: rgba(23, 32, 28, 0.05); padding: 3px 8px; border-radius: 8px; }
+
+    .footer { padding: 52px 20px 64px; text-align: center; color: var(--muted); font-family: var(--sans); font-size: 13.5px; }
+    .footer strong { color: var(--jade-dark); }
+    .footer .motto { font-family: var(--serif); letter-spacing: 0.2em; margin-top: 8px; color: rgba(100, 114, 107, 0.8); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding-top: 48px; }
+      .pains, .frow, .mini-cards, .plans { grid-template-columns: 1fr; }
+      .frow { gap: 22px; }
+      .frow.rev .fmedia { order: 0; }
+      section { padding: 64px 0; }
+    }
+    @media (max-width: 560px) {
+      h1 { font-size: 30px; }
+      .word-page { padding: 20px 18px 16px; font-size: 14px; }
+      .word-note { margin: 4px 18px 18px; }
+      .plan { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="/" aria-label="返回景理枢首页">
+        <span class="seal">印</span>
+        <span>正印疏文 <small>Vermilion · 景理枢出品</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#pain">痛点</a>
+        <a href="#pro">核心功能</a>
+        <a href="#pricing">价格</a>
+        <a href="#faq">答疑</a>
+      </div>
+      <a class="button primary small" href="#download">免费下载</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ 首屏 ============ -->
+    <section class="hero" id="top">
+      <div>
+        <div class="eyebrow">WINDOWS 桌面 · 绿色单文件 · 免安装</div>
+        <h1>论文在纯文本里写,<br>交出去的是<em>规范 Word</em>。</h1>
+        <p class="hero-sub">真标题样式、自动目录、GB/T 7714 国标参考文献、带审阅修订的改稿导出——把排版和改格式的活,从你手里拿走。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#download">免费下载 Windows 版</a>
+          <!-- TODO: B站视频发布后填链接;未发布前可暂时删除此按钮 -->
+          <a class="button" href="#" data-todo="90秒演示视频链接">看 90 秒演示</a>
+        </div>
+        <div class="trust">
+          <span>免安装</span><span>无账号</span><span>数据全本地</span><span>买断制,不订阅</span>
+        </div>
+      </div>
+
+      <div>
+        <!-- 修订视图示意(CSS 绘制,今天就能上线;拍好素材 S4 后可换成真录屏) -->
+        <div class="word-mock" role="img" aria-label="正印疏文导出的 Word 修订视图示意:删改差异以标准修订标记呈现">
+          <div class="word-bar">审阅 · <b>修订:所有标记</b> · 批注</div>
+          <div class="word-page">
+            <p>基于红外相机数据的<del>初步</del><ins>系统</ins>分析表明,目标物种的活动节律<ins>呈显著的晨昏双峰模式,且</ins>与人为干扰强度<del>可能相关</del><ins>呈负相关(P&lt;0.05)</ins>。</p>
+            <p><del>[3] 王某某,2021.</del><ins>[3] 王某某. 红外相机技术在兽类多样性监测中的应用[J]. 生态学报, 2021, 41(5): 1823-1831.</ins></p>
+          </div>
+          <div class="word-note">两稿之间的每一处增删,自动生成为 Word 审阅修订——导师打开就能批。</div>
+        </div>
+        <p class="mock-caption">↑ 它导出的 Word,打开就是这样</p>
+      </div>
+    </section>
+
+    <!-- ============ 痛点:三次返修 ============ -->
+    <section id="pain">
+      <div class="kicker">The Pain / 三次返修</div>
+      <h2>盲审前夜,你不该在跟 Word 搏斗</h2>
+      <p class="lead">内容早就写完了,时间全花在格式上——这三句话,你大概都收到过。</p>
+      <div class="pains">
+        <article class="pain">
+          <span class="chip">返修 一</span>
+          <blockquote>「目录页码对不上,标题样式统一一下。」</blockquote>
+          <p>于是你手动改了四十个标题,改完目录又乱了。</p>
+        </article>
+        <article class="pain">
+          <span class="chip">返修 二</span>
+          <blockquote>「参考文献不是国标格式,逐条核对。」</blockquote>
+          <p>于是你对着 GB/T 7714,一个标点一个标点地敲到凌晨。</p>
+        </article>
+        <article class="pain">
+          <span class="chip">返修 三</span>
+          <blockquote>「这版到底改了哪?开修订模式重发我。」</blockquote>
+          <p>于是你在 Word 里,把自己的修改手动重演了一遍。</p>
+        </article>
+      </div>
+      <p class="pain-close">内容是你的本事,格式不该是你的债。</p>
+    </section>
+
+    <!-- ============ 分工 ============ -->
+    <section id="how">
+      <div class="kicker">How It Works / 分工</div>
+      <h2>写作归你,排版归它</h2>
+      <p class="lead">写作的时候,世界上只有文字;交付的时候,一键长出格式。</p>
+      <div class="flow">
+        <div class="node">
+          <span class="file">论文.txt</span>
+          <strong>你只管写</strong>
+          <span>纯文本,零格式干扰,任何设备任何年代都打得开。</span>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="node">
+          <span class="seal" style="margin:0 auto;">印</span>
+          <strong>正印疏文排版</strong>
+          <span>样式、目录、编号、文献、修订——引擎替你干。</span>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="node">
+          <span class="file red">论文.docx / 修订版.docx</span>
+          <strong>规范交付</strong>
+          <span>学校要的格式、导师要的修订视图,一键导出。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 核心功能 ============ -->
+    <section id="pro">
+      <div class="kicker">Delivery / 核心功能</div>
+      <h2>交稿那一刻,它值回票价</h2>
+
+      <div class="frow">
+        <div class="ftext">
+          <h3>规范 Word,<span class="mark">一键导出</span></h3>
+          <p>导出的是真·标题样式——不是手动加粗的假标题。目录自动生成、页码自动对齐、标题自动编号;字体、字号、行距、编号层级均可按学校模板参数调整。</p>
+          <p>格式设一次,以后每一版导出都规范。</p>
+        </div>
+        <div class="fmedia">
+          <span class="ftag">自动生成 · 真样式</span>
+          <!-- 可替换为素材 S2:导出后 Word 目录页真截图 -->
+          <div class="toc-title">目 录</div>
+          <div class="toc-line"><span>摘要</span><span class="dots"></span><span class="pg">I</span></div>
+          <div class="toc-line"><span>1&nbsp;&nbsp;绪论</span><span class="dots"></span><span class="pg">1</span></div>
+          <div class="toc-line toc-sub"><span>1.1&nbsp;&nbsp;研究背景</span><span class="dots"></span><span class="pg">1</span></div>
+          <div class="toc-line toc-sub"><span>1.2&nbsp;&nbsp;研究意义</span><span class="dots"></span><span class="pg">3</span></div>
+          <div class="toc-line"><span>2&nbsp;&nbsp;研究方法</span><span class="dots"></span><span class="pg">7</span></div>
+          <div class="style-note">样式:标题 1 / 标题 2 · 编号:自动 · 页码:自动</div>
+        </div>
+      </div>
+
+      <div class="frow rev">
+        <div class="ftext">
+          <h3>GB/T 7714 国标参考文献,<span class="mark">标点都不用你敲</span></h3>
+          <p>作者、题名、文献类型标识、刊名、年卷期页——顺序与标点自动按国标编排。盲审老师挑不出格式毛病的那种。</p>
+        </div>
+        <div class="fmedia">
+          <span class="ftag">GB/T 7714 · 自动</span>
+          <!-- 可替换为素材 S3:源文本与导出条目对照截图 -->
+          <div class="refs">
+            <p>[1] 王某某, 李某某. 红外相机技术在兽类多样性监测中的应用[J]. 生态学报, 2021, 41(5): 1823-1831.</p>
+            <p>[2] SMITH J, ZHANG W. Camera trapping for wildlife research[M]. 2nd ed. London: Pelagic Publishing, 2020: 45-72.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="frow">
+        <div class="ftext">
+          <h3>改了哪里?<span class="mark">导出即是修订</span></h3>
+          <p>两稿一对比,所有增删差异直接导出为 Word 审阅修订(track changes)。导师打开就是标准修订视图,逐条接受或批注——你不用在 Word 里手动重演一遍修改。</p>
+          <p>这一件事,目前市面上没有第二个工具替你做。</p>
+        </div>
+        <div class="fmedia">
+          <span class="ftag">两稿 → 修订版</span>
+          <!-- 可替换为素材 S4:对比→导出→修订视图录屏 -->
+          <div class="pipeline">
+            <div class="row">
+              <span class="file">初稿.txt</span>
+              <span class="file">终稿.txt</span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </div>
+            <div class="row">
+              <div class="mini-word">…活动节律<del>可能相关</del><ins>呈负相关(P&lt;0.05)</ins>…</div>
+            </div>
+            <div class="row"><span class="file red">修订版.docx</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 写作顺手(彩蛋) ============ -->
+    <section id="free">
+      <div class="kicker">Writing / 顺手好用</div>
+      <h2>激活之后才发现,它也是支趁手的笔</h2>
+      <p class="lead">买它本是冲着导出去的;用着用着才发现,平时拿它打磨文字也顺手——琢句、对比,顺手就用上了。</p>
+
+      <div class="frow">
+        <div class="ftext">
+          <h3>琢句模式:<span class="mark">一句一格,逐句打磨</span></h3>
+          <p>学术写作的最小单位是句子,不是段落。琢句模式把段落拆成句子逐一雕琢;论证顺序不对?整句拎起来换个位置,不靠反复剪贴。</p>
+        </div>
+        <div class="fmedia">
+          <span class="ftag jade">琢句 · 句级换序</span>
+          <!-- 可替换为素材 S1:琢句模式录屏 -->
+          <div class="sentences">
+            <div class="sent"><span class="handle">⋮⋮</span>本研究选取秦岭中段三个样区布设红外相机 60 台。</div>
+            <div class="sent lift"><span class="handle">⋮⋮</span>已有研究多聚焦单一物种,缺乏群落尺度的系统比较。</div>
+            <div class="sent"><span class="handle">⋮⋮</span>基于此,本文提出以下三个科学问题。</div>
+          </div>
+          <div class="sent-label">↑ 整句拎起,拖到第一句之前</div>
+        </div>
+      </div>
+
+      <div class="mini-cards">
+        <div class="mini-card">
+          <strong>两稿对比</strong>
+          <p>改前改后并排看,差异一目了然——它也是「修订导出」的地基。</p>
+        </div>
+        <div class="mini-card">
+          <strong>纯文本底座</strong>
+          <p>.txt 永远是你的:无账号、无云端、无格式绑架,十年后任何编辑器都打得开。</p>
+        </div>
+      </div>
+      <p class="free-note">写作是顺手的赠品,交付才是它的本行。</p>
+    </section>
+
+    <!-- ============ 对比 ============ -->
+    <section id="compare">
+      <div class="kicker">Compare / 老实对比</div>
+      <h2>为什么不直接用……</h2>
+      <p class="lead">每个工具都有长处,这张表只回答一件事:谁替你把「交付规范 Word」这段路走完。</p>
+      <div class="cmp-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Word 直接写</th>
+              <th scope="col">Obsidian / Markdown</th>
+              <th scope="col">LaTeX</th>
+              <th scope="col" class="me">正印疏文</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">写作时的干扰</th>
+              <td>样式随手就崩,越写越怕碰坏格式</td>
+              <td>清爽</td>
+              <td>编译与命令打断思路</td>
+              <td class="me">纯文本,零干扰</td>
+            </tr>
+            <tr>
+              <th scope="row">一键出规范 Word</th>
+              <td>全靠手排</td>
+              <td>导出样式简陋,目录编号靠手补</td>
+              <td>产出 PDF,转 Word 面目全非</td>
+              <td class="me">真标题样式 + 自动目录 + 自动编号</td>
+            </tr>
+            <tr>
+              <th scope="row">GB/T 7714 文献</th>
+              <td>插件或手敲</td>
+              <td>基本没有</td>
+              <td>可配置,但门槛高</td>
+              <td class="me">内建,自动编排</td>
+            </tr>
+            <tr>
+              <th scope="row">带修订的改稿导出</th>
+              <td>手动重演一遍修改</td>
+              <td>没有</td>
+              <td>latexdiff 出的是 PDF,导师没法批</td>
+              <td class="me">两稿差异直接导出为 Word 修订</td>
+            </tr>
+            <tr>
+              <th scope="row">上手成本</th>
+              <td>零,但持续受苦</td>
+              <td>中</td>
+              <td>高</td>
+              <td class="me">会打字就行</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 定价 ============ -->
+    <section id="pricing">
+      <div class="kicker">Pricing / 定价</div>
+      <h2>定价,像学生的钱包一样诚实</h2>
+      <div class="plans">
+        <div class="plan">
+          <h3>14 天体验</h3>
+          <div class="price">免费 <small>/ 14 天</small></div>
+          <p class="plan-sub">全功能体验,一件不少</p>
+          <ul>
+            <li>下载后领取,一机一码</li>
+            <li><strong>导出、文献、修订、琢句</strong>全部开放</li>
+            <li>到期再用激活码启用,数据不丢</li>
+          </ul>
+          <a class="button jade" href="#download">下载后领取体验</a>
+        </div>
+        <div class="plan pro">
+          <span class="stamp" aria-hidden="true">正印</span>
+          <h3>激活码 · 买断</h3>
+          <div class="price">¥39 <small>创始价 · 前 100 名</small><span class="old">正价 ¥69</span></div>
+          <!-- 名额手动维护:满 100 份后把本行改为「正价 ¥69」并删除 old -->
+          <p class="plan-sub">全功能,一次买断,不分层级</p>
+          <ul>
+            <li><strong>规范 Word 导出</strong>:真标题样式 / 自动目录 / 自动编号 / 格式参数可调</li>
+            <li><strong>GB/T 7714</strong> 国标参考文献自动编排</li>
+            <li><strong>审阅修订导出</strong>:两稿差异 → Word track changes</li>
+            <li>另赠:<strong>琢句、两稿对比</strong>等写作顺手功能</li>
+          </ul>
+          <!-- TODO: 替换为爱发电 / 面包多商品链接 -->
+          <a class="button primary" href="#" data-todo="爱发电购买链接">购买激活码 · ¥39</a>
+          <p class="plan-fine">一次买断 · 2 台设备 · 1.x 版本免费升级 · 付款后由作者发送激活码,粘贴即解锁,激活后可离线使用</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq">
+      <div class="kicker">FAQ / 答疑</div>
+      <h2>你大概想问</h2>
+      <div class="faq">
+        <details>
+          <summary>怎么收费?有免费试用吗?</summary>
+          <p>下载免费。¥39 激活码一次买断启用全功能——导出、国标文献、修订导出、琢句、写作全部开放,不分层级,绑定 2 台设备、可离线。想先试?领 14 天免费体验,全功能可用、没有功能区分。</p>
+        </details>
+        <details>
+          <summary>我的论文数据安全吗?会上传吗?</summary>
+          <p>所有文档都在你自己的硬盘里。软件没有账号体系、不做云同步;除激活码校验外,不向服务器发送任何内容。你的底稿是 .txt——这世上最不会被绑架的格式。</p>
+        </details>
+        <details>
+          <summary>Windows 提示「未知发布者」/ 杀毒软件报毒?</summary>
+          <p>个人开发者暂未购买代码签名证书,首次运行出现该提示属正常现象。下载区提供 SHA256 校验值,可自行核验文件完整性;介意的话,先领 14 天体验码观察一阵子再说。</p>
+        </details>
+        <details>
+          <summary>学校模板五花八门,你都能匹配吗?</summary>
+          <p>常见规范(字体、字号、行距、标题编号层级)都能通过导出参数覆盖。确实搞不定的,进用户群说一声——作者本人就是在读研究生,你的模板痛点大概率下个版本就有解。</p>
+        </details>
+        <details>
+          <summary>支持 Mac / Linux 吗?</summary>
+          <p>暂时只有 Windows。呼声足够高会认真考虑。</p>
+        </details>
+        <details>
+          <summary>买断制……那哪天作者不干了怎么办?</summary>
+          <p>软件纯本地运行,已激活的设备不依赖服务器存活;万一有天服务真的停了,会发布免验证版本兜底。而你的 .txt 底稿,任何编辑器都打得开——这正是选纯文本做底座的原因。</p>
+          <!-- 注意:「免验证版本兜底」是对用户的长期承诺,发布即生效;若不愿承诺请删除此句 -->
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ 出品人 ============ -->
+    <section id="maker">
+      <div class="maker">
+        <span class="seal">枢</span>
+        <h2>一个人做的,先救了他自己的论文</h2>
+        <p>正印疏文出自「景理枢」——一个研究生独自经营的软件小铺。铺子里的每件工具都守同一条铁律:绿色单文件、少依赖、能被一个人安静维护十年。</p>
+        <div class="maker-links">
+          <a href="/">逛逛铺子的其他货 →</a>
+          <a href="/about/">读铺子的纲领 →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 下载 ============ -->
+    <section id="download" class="dl">
+      <div class="kicker">Download / 下载</div>
+      <h2>现在就把排版的活交出去</h2>
+      <div class="hero-actions" style="margin-top:28px;">
+        <!-- TODO: 替换为 GitHub Releases 直链 -->
+        <a class="button primary" href="#" data-todo="GitHub Releases 下载直链">下载 v1.0(Windows 64 位)</a>
+        <!-- TODO: 替换为 123 云盘等国内镜像链接 -->
+        <a class="button" href="#" data-todo="国内网盘镜像链接">国内镜像下载</a>
+      </div>
+      <div class="dl-meta">
+        <!-- TODO: 发布时填入真实版本号与 SHA256 -->
+        <span>版本 v1.0 · 适用 Windows 10 / 11(64 位)· 免安装,下载即用</span>
+        <span>SHA256:<code data-todo="发布时填入校验值">发布时填入</code></span>
+        <span data-todo="用户群号或二维码">用户群:发布时填入(反馈、模板求助、新版本通知都在群里)</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><strong>正印疏文 Vermilion</strong> · 景理枢出品 · <a href="/">jinglishu.cn</a></p>
+    <p class="motto">织理山河,共弈锦绣</p>
+  </footer>
+</body>
+</html>
